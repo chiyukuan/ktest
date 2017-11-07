@@ -131,6 +131,10 @@ class TcBase(TestCase):
     def _getDeviceList(self, step):
         devType = step.opq
         timeSpend = 0
+        devWList = None
+        if TestCase.hasParam('raw_disks_wlist'):
+            devWList = TestCase.getParamEval('raw_disks_wlist')
+
         if devType == TcBase.DEV_TYPE.VDISK:
             for host in self.bench.getAppHosts():
                 # wait till device is available
@@ -145,6 +149,9 @@ class TcBase(TestCase):
 
                 devs = host.getRslt()
                 for dev in devs:
+                    if devWList is not None and dev not in devWList:
+                        continue
+
                     host.run('blockdev --getsize64 %s' % dev)
                     host.addDevice( dev, host.getRslt() )
 
@@ -154,6 +161,9 @@ class TcBase(TestCase):
                         self.bench.dockName)
                 devs = host.getRslt()
                 for dev in devs:
+
+                    if devWList is not None and dev not in devWList:
+                        continue
                     # assume the dev size is 128G. Need a way to know the actual size
                     host.addDevice( dev, 128 * 1024 * 1024 * 1024 )
 
@@ -168,6 +178,9 @@ class TcBase(TestCase):
                 for dev in devs:
                     if dev[0] in pvAttr[0]:
                         continue
+                    if devWList is not None and dev[0] not in devWList:
+                        continue
+
                     host.run('blockdev --getsize64 %s' % dev[0])
                     host.addDevice( dev[0], host.getRslt(), "Disk%02d" % idx, dev[1] )
                     idx += 1
@@ -182,6 +195,9 @@ class TcBase(TestCase):
 
                 idx = 0
                 for dev in devs:
+
+                    if devWList is not None and dev not in devWList:
+                        continue
                     host.run('blockdev --getsize64 %s' % dev)
                     host.addDevice( dev, host.getRslt(), "Disk%02d" % idx )
                     idx += 1

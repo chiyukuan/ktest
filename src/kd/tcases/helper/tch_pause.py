@@ -1,12 +1,5 @@
 #! /usr/bin/env python
 
-''' ------------------------|  Python SOURCE FILE  |------------------------
-
-The Description of this file.
-
-@copyright: Copyright (c) by Kodiak Data, Inc. All rights reserved.
-'''
-
 from kd.tfwk.test_case import TestCase
 
 class TchPause(TestCase):

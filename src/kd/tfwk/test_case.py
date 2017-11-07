@@ -208,7 +208,7 @@ class TestCase(Runnable):
     @classmethod
     def getParamEval(cls, name):
         sValue = cls.getParam(name)
-        return None if sValue is None else eval( sValue )
+        return eval( sValue ) if isinstance( sValue, basestring ) else sValue
 
     @classmethod
     def getParamExactEval(cls, name):
