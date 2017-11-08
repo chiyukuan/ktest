@@ -149,14 +149,13 @@ class TcFio(TcBase):
             self.addStep_getDeviceList( TcBase.DEV_TYPE.RAW )
 
 
+        self.addStep("Gen fio configuration file",        self._genFioCfg)
         if ( not bool(TcBase.getParam( 'io.fio_skip') ) ):
-            self.addStep("Gen fio configuration file",        self._genFioCfg)
             self.addStep("Run fio",                           self._run)
             self.addStep("Genetate Disk Performance Matrics", self._report)
-            pass
 
     @classmethod
-    def allTestCases(cls, vdisk=True, xfs=False, nvme=False, runSpecs=None, runTime=None, diskSz=0, diskCnt=None, osio=None, waitTime=60, ioStat=None):
+    def allTestCases(cls, vdisk=True, xfs=False, nvme=False, runSpecs=None, runTime=None, txSzs=None, diskSz=0, diskCnt=None, osio=None, waitTime=60, ioStat=None):
         # debug mode
         if runSpecs is None:
             runSpecs = [ 'write', 'read', 'randwrite', 'randread', 'randrw:70' ]
@@ -164,7 +163,7 @@ class TcFio(TcBase):
         tcases = []
 
         for runSpec in runSpecs:
-            tcases.append( cls(vdisk=vdisk, xfs=xfs, nvme=nvme, runSpec=runSpec, runTime=runTime, diskSz=diskSz, diskCnt=diskCnt, ioStat=ioStat, osio=osio) )
+            tcases.append( cls(vdisk=vdisk, xfs=xfs, nvme=nvme, runSpec=runSpec, runTime=runTime, txSzs=txSzs, diskSz=diskSz, diskCnt=diskCnt, ioStat=ioStat, osio=osio) )
             tcases.append( TchUtil('sleep', waitTime) ),
 
         return tcases
@@ -199,6 +198,9 @@ class TcFio(TcBase):
                     cfg = FioCfg( self.runTime, [txSz, self.runSpec[0], self.runSpec[1]],
                                             osio=osio, workerPerTarget=self.workerPerTarget, ioengine=self.ioengine, bw=self.bw, verify=self.verify, doVerify=self.doVerify)
                     cfg.write( self.lCfgFNs[idx], devs )
+
+                    if bool(TcBase.getParam( 'io.fio_skip'):
+                            continue
 
                     url = Url.fromUrl(host.url, protocol='scp', filename=self.rCfgFNs[idx])
                     execUrlSess( url, scpFrom=self.lCfgFNs[idx] )

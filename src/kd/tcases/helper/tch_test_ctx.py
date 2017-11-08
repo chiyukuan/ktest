@@ -6,7 +6,7 @@ class TchTestCtx(TestCase):
 
     def __init__(self, cmd, varName, value=None):
         if 'set' == cmd:
-            super(TchTestCtx, self).__init__(None, 'Set test context variable')
+            super(TchTestCtx, self).__init__(None, 'Set test context variable %s to %s' % (varName, value))
             self.addStep("set variable", self._setVariable, opq=[varName, value])
 
     @classmethod

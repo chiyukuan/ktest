@@ -530,8 +530,8 @@ class TchDhost(TcBase):
             if wlist is not None and idx not in wlist:
                 continue
 
-            host.run('/bin/curl http://localhost:3000/kodiak/api/dockhost/resources > %s/kodiak_res.xml' % TcBase.getWorkDir())
-            host.run('/bin/grep --color=never uptime %s/kodiak_res.xml' % TcBase.getWorkDir())
+            host.run('/bin/curl http://localhost:3000/kodiak/api/dockhost/resources > /tmp/kodiak_res.xml')
+            host.run('/bin/grep --color=never uptime /tmp/kodiak_res.xml')
             if host.getRC() != RC.OK:
                 step.setRC(RC.ERROR, 'Kodiak apps have some issues at %s' % host) ;
                 return

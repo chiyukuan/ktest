@@ -101,8 +101,10 @@ class TchBuild(TcBase):
 
     def _build(self, step):
         while True:
+            self.bHost.run("cd %s/tools/nanopb-0.3.3-linux-x86/generator/proto" % self.gitDir)
+            self.bHost.run("make")
             self.bHost.run("cd %s" % self.gitDir)
-            self.bHost.run("./setup.sh") ;
+            #self.bHost.run("./setup.sh") ;
             self.bHost.run("make OFFICIAL=1 clean") ;
             self.bHost.run("make OFFICIAL=1 > %s 2>&1" % self.makeOut) ;
             if self.bHost.run("echo $?") != RC.OK:

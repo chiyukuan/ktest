@@ -37,6 +37,9 @@ class LsscsiHdlr(LcmdHdlr):
             tokens = line.split()
             if tokens[1] != 'disk':
                 continue
+            if tokens[2] == 'iDRAC':
+                continue
+
             if rslt is None:
                 rslt = []
             rslt.append( (tokens[-1], tokens[0][1:-1]) )

@@ -35,6 +35,7 @@ class PvdisplayHdlr(LcmdHdlr):
                 continue
 
             rslt = line.strip().split(':')
+            break
         return rslt
 
 if __name__ == '__main__':
