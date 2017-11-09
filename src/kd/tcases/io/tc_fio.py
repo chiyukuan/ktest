@@ -199,7 +199,7 @@ class TcFio(TcBase):
                                             osio=osio, workerPerTarget=self.workerPerTarget, ioengine=self.ioengine, bw=self.bw, verify=self.verify, doVerify=self.doVerify)
                     cfg.write( self.lCfgFNs[idx], devs )
 
-                    if bool(TcBase.getParam( 'io.fio_skip'):
+                    if bool(TcBase.getParam( 'io.fio_skip' )):
                             continue
 
                     url = Url.fromUrl(host.url, protocol='scp', filename=self.rCfgFNs[idx])
