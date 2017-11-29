@@ -47,7 +47,7 @@ class TcBench(object):
             self.hasPK        = False
             self.hasReflector = False
             self.knsPort      = self.basePort + 1
-            self.nodeId       = nIdx + 1
+            self.nodeId       = (nIdx * 16 ) + 1
             self.tkcdCtx      = None
             self.skipClose    = False
 
@@ -296,6 +296,8 @@ class TcBench(object):
 
         if 'docknodes' in bench:
             for host in bench['docknodes']:
+                if TestCase.hasParam('bench.docknodes.nodes'):
+                    host['nodes'] = TestCase.getParamEval( 'bench.docknodes.nodes' )
                 ep = TcBench.Ep( host )
                 self.dockEps.append( ep )
                 if ep.hasKns:

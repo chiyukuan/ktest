@@ -239,7 +239,7 @@ class TcFio(TcBase):
                     if isinstance(txSz,int):
                         feedKey = '%d K, %d' % (txSz/1024, osio)
                     else:
-                        feedKey = '%s, %d' % (self.txSz, osio)
+                        feedKey = '%s, %d' % (txSz, osio)
                     self.stats.newFeed( feedKey, [rslt.getIOps(), rslt.getBW(), rslt.getRespTime()])
 
             if not step.canContinue():  break

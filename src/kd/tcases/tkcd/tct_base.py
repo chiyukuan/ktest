@@ -302,8 +302,8 @@ class TctBase(TcBase):
         ioIdx = 1
         for addr in addrBegs:
             step.opq = [ioType, pId, addr, ioSize, protType]
-            ioDesc = "- %3d %5s %4d KB at offset %8d KB panel-%d" % (
-                        ioIdx, ioType, ioSize/1024, addr/1024, pId)
+            ioDesc = "- %3d %5s 0x%02x block from %d:%d:0x%05x" % (
+                        ioIdx, ioType, ioSize/4096, pId, addr >> 30, (addr & 0x3fffffff)/4096)
             ioIdx += 1
             print ioDesc,
             logger.info( ioDesc )
