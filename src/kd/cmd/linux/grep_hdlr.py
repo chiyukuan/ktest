@@ -1,12 +1,5 @@
 #! /usr/bin/env python
 
-''' ------------------------|  Python SOURCE FILE  |------------------------
-
-The Description of this file.
-
-@copyright: Copyright (c) by Kodiak Data, Inc. All rights reserved.
-'''
-
 from lcmd_hdlr      import LcmdHdlr
 from kd.ep.cmd_ctx  import CmdCtx
 from kd.util.rc_msg import RC

@@ -23,7 +23,7 @@ class TchBuild(TcBase):
                        gitCOSkip=False):
         if desc is None:
             desc = 'Check out and build Kodiak Container'
-        super(TchBuild, self).__init__(None, desc)
+        super(TchBuild, self).__init__(desc)
         self.gitTag    = gitTag
         self.gitCommit = gitCommit
         self.gitRepo   = 'git@github.com:kodiakdata/KodiakContainer.git'
