@@ -154,9 +154,9 @@ class TctBase(TcBase):
 
     def _bindTile(self, step, opq=None):
         if opq is None:
-            pId, tSetId, protectionType, force, pollute = step.opq
+            pId, tSetId, protectionType, force, pollute, bindError = step.opq
         else:
-            pId, tSetId, protectionType, force, pollute = opq
+            pId, tSetId, protectionType, force, pollute, bindError = opq
 
         tMInfoKey = '%d@%d' % (tSetId, pId)
         if tMInfoKey not in TctBase.Tiles or force:
@@ -172,21 +172,29 @@ class TctBase(TcBase):
                 tkcdCtx = node.tkcdCtx
                 sys.stdout.write( "- %s from %s\n" % (msg, tkcdCtx.sess.url) )
                 tkcdCtx.run(msg, tryParse=False)
-                sys.stdout.write( "  %s from %s\n" % (tkcdCtx.cmdCtx.rspMsg, tkcdCtx.sess.url) )
-                step.rcMsg = tkcdCtx.getRcMsg()
-                if not step.canContinue():
+                sys.stdout.write( "  %s from %s\n" % (
+                    tkcdCtx.cmdCtx.rspMsg if tkcdCtx.getRC() == RC.OK else tkcdCtx.getRcMsg(), tkcdCtx.sess.url) )
+                if bindError:
+                    if tkcdCtx.getRC() == RC.OK:
+                        step.setRCMsg( RC.ERROR, "Bind should failed" )
                     break
+
+                else:
+                    step.rcMsg = tkcdCtx.getRcMsg()
+                    if not step.canContinue():
+                        break
 
                 TctBase.Tiles[ tMInfoKey ] = [host.ip, tkcdCtx.cmdCtx.rspMsg, -1]
                 if pollute:
                     TctBase.Tiles[ tMInfoKey ][1].tKey += 1
                 break
 
-    def addStep_bindTile(self, bindSpec, force=False, pollute=False):
+    def addStep_bindTile(self, bindSpec, force=False, pollute=False, error=False):
 
         if len(bindSpec) == 2:      bindSpec.append('P_none')
         bindSpec.append( force )
         bindSpec.append( pollute )
+        bindSpec.append( error )
         self.addStep('Bind Tile tileSet %d@%d pType %s' % (bindSpec[1], bindSpec[0], bindSpec[2]),
                      self._bindTile, opq=bindSpec)
 
@@ -229,7 +237,7 @@ class TctBase(TcBase):
 
         while True:
 
-            self._bindTile( step, opq=[pId, tSetId, protectionType, False, False] )
+            self._bindTile( step, opq=[pId, tSetId, protectionType, False, False, False] )
             if not step.canContinue():
                 break
 

@@ -14,7 +14,7 @@ logger = getLogger(__name__)
 
 class TctTile(TctBase):
 
-    def __init__(self, tileSpecs, desc=None, force=True, pollute=False):
+    def __init__(self, tileSpecs, desc=None, force=True, pollute=False, error=False):
         if desc is None:
             desc = "bind %d %s tile" % ( len(tileSpecs),
                    "P_none" if len(tileSpecs[0]) == 2 else tileSpecs[0][2] )
@@ -23,7 +23,7 @@ class TctTile(TctBase):
         
         for tileSpec in tileSpecs:
             
-            self.addStep_bindTile(tileSpec, force=force, pollute=pollute)
+            self.addStep_bindTile(tileSpec, force=force, pollute=pollute, error=error)
 
     @classmethod
     def allTestCases(cls):
