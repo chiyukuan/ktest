@@ -35,7 +35,7 @@ class TchMake(TcBase):
                 makeCmd = "make OFFICIAL=1" if self.official else "make"
 
                 self.bHost.run("%s clean" % makeCmd )
-                self.bHost.run('%s MAKE_CFLAGS=%s' % (makeCmd, self.opt))
+                self.bHost.run('%s MAKE_CFLAGS="%s"' % (makeCmd, self.opt))
 
             break
         return

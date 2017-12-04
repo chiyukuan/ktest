@@ -103,7 +103,7 @@ class TctBase(TcBase):
                 elif cmd == DEV_CMD.ERR_IO:
                     devMsg = getErrDevIoMsg(mPath, ePol=ePol)
                 else:
-                    step.setRCMsg(RC.ERROR, "Command %s is not supported" % cmd)
+                    step.setRC(RC.ERROR, "Command %s is not supported" % cmd)
 
                 host.nodes[ nodeIdx ].tkcdCtx.run(devMsg, tryParse=False)
                 step.rcMsg = host.nodes[ nodeIdx ].tkcdCtx.getRcMsg()
@@ -176,7 +176,7 @@ class TctBase(TcBase):
                     tkcdCtx.cmdCtx.rspMsg if tkcdCtx.getRC() == RC.OK else tkcdCtx.getRcMsg(), tkcdCtx.sess.url) )
                 if bindError:
                     if tkcdCtx.getRC() == RC.OK:
-                        step.setRCMsg( RC.ERROR, "Bind should failed" )
+                        step.setRC( RC.ERROR, "Bind should failed" )
                     break
 
                 else:
