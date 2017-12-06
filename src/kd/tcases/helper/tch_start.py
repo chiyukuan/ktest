@@ -83,7 +83,11 @@ class TchStart(TcBase):
             for node in host.nodes:
 
                 for item in self.startList:
-                    if item.lower() == 'kdtkcd':
+                    spec = item.split(".")
+                    if spec[0].lower() == 'kdtkcd':
+                        if len(spec) == 2:
+                            if node.nodeId != int(spec[1]):
+                                continue
                         self.local.run('echo "" > ~/nohup.out.%d' % node.nodeId) ;
                         self.local.run("mkdir -p /kodiak/dock/%s/docknode/%d/cfg" % \
                                 (self.bench.dockName, node.nodeId) )
