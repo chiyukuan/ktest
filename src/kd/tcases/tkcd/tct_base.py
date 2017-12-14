@@ -293,6 +293,7 @@ class TctBase(TcBase):
             ioSpec[0] = self._getIoType( ioSpec[0] )
         ioSpec.append(False)
 
+        print ioSpec
         ioType, pId, addr, byteCnt, protectionType, expectOK = ioSpec
 
         self.addStep('%s %d bytes from %d@%d' % (ioType, byteCnt, addr, pId),
