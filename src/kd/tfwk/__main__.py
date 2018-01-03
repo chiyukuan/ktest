@@ -46,7 +46,9 @@ def runConfig():
     if options.dryRun:
         TestCase.setParam('__force_skip__', 'enable')
 
-    logger.info("Start %s test suite\n", desc)
+    logger.info("****")
+    logger.info("**** Start %s test suite", desc)
+    logger.info("****\n")
     logger.debug(
         "Run %s test suite with following parameters:\n'%s'", desc, testCtx.params)
     for idx in range(len(whitelist)):
@@ -95,7 +97,6 @@ parser.add_option("--wdir_tag",   action="store",      dest="wDirTag", default="
                   help="Add extra Tag on working directory")
 
 (options, args) = parser.parse_args()
-print options
 if options.config is not None:
     Environ.CFG_FILE_NAME = options.config
 

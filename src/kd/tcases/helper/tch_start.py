@@ -68,7 +68,14 @@ class TchStart(TcBase):
             if item.lower() == 'kdtkd':
                 item = 'node ./bin/main kdtkd'
             for line in out.splitlines():
-                if item in line and 'attach_gdb.sh' not in line:
+                if item[-1] == "$":
+                    if not line.endswith( item[:-1] ):
+                        continue ;
+                else:
+                    if item not in line:
+                        continue ;
+
+                if 'attach_gdb.sh' not in line:
                     pid = int(line.split(None, 1)[0])
                     os.kill(pid, signal.SIGKILL)
                     print "Stop the process, %d, %s" % (pid, item)
