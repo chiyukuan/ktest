@@ -36,7 +36,7 @@ def getLinuxCtx(url, seps=None):
     if type(url) is str:
         url = Url.fromStr(url) ;
     if seps is None:
-        seps = '[^\r\n ]*%s[^\#\$]*[#$][^ ]* ' % (url.shostname)
+        seps = '[^\r\n ]*%s [^\#\$]*[#$][^ ]*' % (url.shostname)
     sess = getUrlSess(url, seps)
     if sess is None:
         logger.error("Failed to create linux session") ;

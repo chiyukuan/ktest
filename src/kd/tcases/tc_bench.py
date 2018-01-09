@@ -148,6 +148,7 @@ class TcBench(object):
             self.ctx    = None
             self.devs   = None
             self.dIfs   = None
+            self.cmdRunning = False
     
         def open(self, step, mesg=True):
             while True:
@@ -188,9 +189,23 @@ class TcBench(object):
         def getKnsPort(self):
             return self.knsPort
 
-        def run(self, cmd, timeout=-1):
-            self.ctx.run(cmd, timeout=timeout)
-            return self.ctx.getRC()
+        def run(self, cmd, timeout=-1, background=False):
+            self.cmdRunning = True
+            if background:
+                self.ctx.run(cmd + " > /dev/null 2>&1 &", timeout=timeout)
+                self.ctx.run('echo "ps -p $!" > /tmp/is_running.sh')
+            else:
+                self.ctx.run(cmd, timeout=timeout)
+                self.cmdRunning = False
+                return self.ctx.getRC()
+
+        def isCmdRunning(self):
+            if self.cmdRunning:
+                self.ctx.run('/bin/sh /tmp/is_running.sh')
+                if self.ctx.run("echo $?") != RC.OK:
+                    self.cmdRunning = False
+            return self.cmdRunning
+
 
         def getRC(self):
             return self.ctx.getRC()

@@ -19,7 +19,7 @@ logger = getLogger(__name__)
 
 class TcBase(TestCase):
 
-    DEV_TYPE = enum('VDISK', 'XFS', 'RAW', 'NVME')
+    DEV_TYPE = enum('VDISK', 'XFS', 'RAW', 'NVME', 'APPHOST_XFS')
 
     class CurlCmd(object):
         def __init__(self, fname, service, method, path):
@@ -132,6 +132,7 @@ class TcBase(TestCase):
         devType = step.opq
         timeSpend = 0
         devWList = None
+        print devType
         if TestCase.hasParam('raw_disks_wlist'):
             devWList = TestCase.getParamEval('raw_disks_wlist')
 
@@ -166,6 +167,19 @@ class TcBase(TestCase):
                         continue
                     # assume the dev size is 128G. Need a way to know the actual size
                     host.addDevice( dev, 128 * 1024 * 1024 * 1024 )
+
+        elif devType == TcBase.DEV_TYPE.APPHOST_XFS:
+            for host in self.bench.getAppHosts():
+                host.run('/bin/ls --color=none -d /kodiak/dock/%s/docknode/*/mnt/*' %
+                        self.bench.dockName)
+                devs = host.getRslt()
+                print devs
+                for dev in devs:
+
+                    if devWList is not None and dev not in devWList:
+                        continue
+                    # assume the dev size is 128G. Need a way to know the actual size
+                    host.addDevice( dev, 200 * 1024 * 1024 * 1024 )
 
         elif devType == TcBase.DEV_TYPE.RAW:
             for host in self.bench.getDockHosts():
