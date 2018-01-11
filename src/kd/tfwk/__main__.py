@@ -47,7 +47,8 @@ def runConfig():
         TestCase.setParam('__force_skip__', 'enable')
 
     logger.info("****")
-    logger.info("**** Start %s test suite", desc)
+    logger.info("**** Run %s", Environ.TestSuit)
+    logger.info("****     %s", testCtx.desc)
     logger.info("****\n")
     logger.debug(
         "Run %s test suite with following parameters:\n'%s'", desc, testCtx.params)

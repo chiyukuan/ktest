@@ -12,10 +12,26 @@ declare -a positive_ts=(
                         "tkcd_P__1x1_rw_more_tiles"
                         )
 
+# @todo need a way to re-write the tile-group, tile-group out-of-sync
 declare -a bind_error_ts=(
-                    "tkcd_P__1x1_dock_bind_error"
-                    "tkcd_P__1x1_dock_bind_error_2"
-                    "tkcd_P__1x1_dock_bind_error_3"
+                    "tkcd_P__1x1_dock_bind__host2_host3_bind_error"
+                    "tkcd_P__1x1_dock_bind__host2_host3_host4_bind_error"
+                    "tkcd_P__1x1_dock_bind__host1_bind_error"
+                    "tkcd_P__1x1_dock_bind__ep1_tg_error"
+                    "tkcd_P__1x1_dock_bind__ep2_tg_error"
+                    "tkcd_P__1x1_dock_bind__ep1_ep2_tg_error"
+                    "tkcd_P__1x1_dock_bind__ep0_ep1_ep2_tg_error"
+                        )
+# testbench: 5 tkcd
+### @NOTE need a way to clean up the bind resource at node-bind timeout cases
+declare -a bind_timeout_ts=(
+                    "tkcd_P__1x1_dock_bind__host2_host3_bind_tout"
+                    "tkcd_P__1x1_dock_bind__host2_host3_host4_bind_tout"
+                    "tkcd_P__1x1_dock_bind__ep0_tg_tout"
+                    "tkcd_P__1x1_dock_bind__ep1_tg_tout"
+                    "tkcd_P__1x1_dock_bind__ep2_tg_tout"
+                    "tkcd_P__1x1_dock_bind__ep1_ep2_tg_tout"
+                    "tkcd_P__1x1_dock_bind__ep0_ep1_ep2_tg_tout"
                         )
 
 declare -a io_no_ep_ts=(
@@ -38,9 +54,9 @@ declare -a io_timeout_ts=(
                     "tkcd_P__1x1_write_ep1_tout__ep1_ep2_tg_tout"
                         )
 
-
-declare -a io_dirty_tile_ts=(
+declare -a rd_dirty_tile_ts=(
                     "tkcd_P__1x1_tileset_1_dirty__forward_read"
+                    "tkcd_P__1x1_tileset_1_dirty__forward_read__ep1_tout"
                         )
 
 declare -a misc_ts=(
@@ -51,10 +67,11 @@ declare -a misc_ts=(
 declare -a tsuites=(
                     ${positive_ts[@]}
                     ${bind_error_ts[@]}
+                    ${bind_timeout_ts[@]}
                     ${io_no_ep_ts[@]}
                     ${io_error_ts[@]}
                     ${io_timeout_ts[@]}
-                    ${io_dirty_tile_ts[@]}
+                    ${rd_dirty_tile_ts[@]}
                     ${misc_ts[@]}
                     )
 

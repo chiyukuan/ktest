@@ -345,23 +345,6 @@ class TctBase(TcBase):
                     ioType, ioSize >> 10, addrBeg >> 10, pId, addrEnd >> 10, addrIncr >> 10)
 
         self.addStep(myDesc, self._rwDataPattern, opq=ioSpec) 
-        '''
-        if ioType == IO_TYPE.WRITE_AND_READ:
-            ioTypes = [ IO_TYPE.WRITE, IO_TYPE.READ ]
-        else:
-            ioTypes = [ ioType ]
-
-        for ioType in ioTypes:
-            ioSpec[0] = ioType
-            if ioCnt is not None:
-                myDesc = 'Pattern %s %dK-byte from %dK@%d incr %dK %d times' % (
-                        ioType, ioSize >> 10, addrBeg >> 10, pId, addrIncr >> 10, ioCnt )
-            else:
-                myDesc = 'Pattern %s %dK-byte from %dK@%d to %dK incr %dK' % (
-                        ioType, ioSize >> 10, addrBeg >> 10, pId, addrEnd >> 10, addrIncr >> 10)
-
-            self.addStep(myDesc, self._rwDataPattern, opq=ioSpec) 
-        '''
 
     def _rwDataRandom(self, step):
         ioType, pId, addrBeg, addrEnd, ioSizeMin, ioSizeMax, ioCnt, protType = step.opq
