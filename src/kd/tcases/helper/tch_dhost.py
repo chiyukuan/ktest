@@ -65,7 +65,7 @@ class TchDhost(TcBase):
 
         elif 'reset_tkcd' == cmd:
             super(TchDhost, self).__init__('reset tkcd database')
-            self.addStep("reset TKCD database",  self._resetTkcd )
+            self.addStep("reset TKCD database",  self._resetTkcd, opq=params )
 
         elif 'backup_tkcd' == cmd:
             super(TchDhost, self).__init__('backup tkcd database')
@@ -645,8 +645,11 @@ class TchDhost(TcBase):
                                      '/kodiak/dockport/dockport.cfg')
 
     def _resetTkcd(self, step):
+        nodeId = step.opq
         for host in self.bench.getDockHosts():
             for node in host.nodes:
+                if step.opq is not None and node.nodeId != step.opq:
+                    continue
                 self.local.run('/bin/rm /kodiak/dock/%s/docknode/%d/cfg/tilekeeper/tile.db' %
                                ( self.bench.getDockName(), node.nodeId ) ) ;
         self.local.run('/bin/rm -rf /kodiak/dock/%s/docknode/*/mnt/*/*.data' %

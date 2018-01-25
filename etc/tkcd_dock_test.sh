@@ -4,12 +4,14 @@ target=~/tmp/tkcd_dock_test/`date +%m%d`
 
 mkdir -p $target
 
+# @note tkcd_P__1x1_restart need to verify the no sync is required
 declare -a positive_ts=(
                         "tkcd_P__1x1_bind"
                         "tkcd_P__1x1_wr_one_tile"
                         "tkcd_P__1x1_rw_one_tile"
                         "tkcd_P__1x1_wr_more_tiles"
                         "tkcd_P__1x1_rw_more_tiles"
+                        "tkcd_P__1x1_restart"
                         )
 
 # @todo need a way to re-write the tile-group, tile-group out-of-sync
@@ -33,6 +35,11 @@ declare -a bind_timeout_ts=(
                     "tkcd_P__1x1_dock_bind__ep1_ep2_tg_tout"
                     "tkcd_P__1x1_dock_bind__ep0_ep1_ep2_tg_tout"
                         )
+
+declare -a no_ts=(
+                    "bind write, remove disk ==> rebuild"
+#                    "bind write, stop ep1, cleanup ep1 db, restart ep1 ==> rebuild"
+                    )
 
 declare -a io_no_ep_ts=(
                     "tkcd_P__1x1_write_no_ep0"
@@ -59,6 +66,15 @@ declare -a rd_dirty_tile_ts=(
                     "tkcd_P__1x1_tileset_1_dirty__forward_read__ep1_tout"
                         )
 
+# @todo need a way to persist tileGrp and tile meta data at beging of rebuild
+declare -a rebuild_ts=(
+                    "tkcd_P__1x1_rebuild__on_start"
+                    "tkcd_P__1x1_rebuild__on_disk_deletion"
+                    "tkcd_P__1x1_rebuild__on_ep0_replacement"
+                    "tkcd_P__1x1_rebuild__on_ep1_replacement"
+                    "tkcd_P__1x1_rebuild__on_ep2_replacement"
+                    )
+
 declare -a misc_ts=(
                     "tkcd_P__1x1_write_ep1_all_error"
                     "tkcd_P__1x1_write_ep1_error__no_ep2"
@@ -72,6 +88,7 @@ declare -a tsuites=(
                     ${io_error_ts[@]}
                     ${io_timeout_ts[@]}
                     ${rd_dirty_tile_ts[@]}
+                    ${rebuild_ts[@]}
                     ${misc_ts[@]}
                     )
 
