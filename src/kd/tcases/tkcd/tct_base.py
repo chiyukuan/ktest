@@ -21,6 +21,7 @@ from kd.ep.ep_ctx import getTkcdCtx, getLocalCtx, getGdbCtx
 from kd.tcases.tc_helper import TcHelper
 from kd.tkcd.dev_msg import getAddDevMsg, getDelDevMsg, getErrDevMsg, getErrDevIoMsg
 from kd.tkcd.tile_msg import getBindTileMsg, getDelPanelMsg
+from kd.tkcd.sshot_msg import getAddSShotMsg, getDelSShotMsg
 from kd.tkcd.io_msg import getRdMsg, getWrMsg, IoMsg
 from kd.tcases.tc_bench import TcBench
 from kd.tcases.tc_base import TcBase
@@ -220,6 +221,27 @@ class TctBase(TcBase):
         if pTypeKey is None:
             pTypeKey = 'P_none'
         self.addStep('Delete panel %d' % panelId, self._delPanel, opq=(panelId, pTypeKey))
+
+    def _addSnapshot(self, step):
+        readonly, panelIds = step.opq
+        msg = getAddSShotMsg( 0xcacaca11, readonly, panelIds )
+        for host in self.bench.getDockHosts():
+            self.nodeIdx += 1
+            if self.nodeIdx >= len(host.nodes):
+                self.nodeIdx = 0
+
+            node    = host.nodes[ self.nodeIdx ]
+            tkcdCtx = node.tkcdCtx
+            tkcdCtx.run(msg, tryParse=False)
+            step.rcMsg = tkcdCtx.getRcMsg()
+            if not step.canContinue():
+                break
+
+
+    def addStep_addSnapshot(self, readonly, panelIds):
+
+        self.addStep('Add snapshot', self._addSnapshot, opq=(readonly, panelIds))
+
 
     def _rwData(self, step):
         if len(step.opq) == 5:

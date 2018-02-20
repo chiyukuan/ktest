@@ -14,7 +14,10 @@ TKCD_CMD_TYPE = enum( ['READ',         1],
                       ['NODE_UNBIND', 23],
                       ['DOCK_BIND',   29],
                       ['DOCK_UNBIND', 30],
-                      ['DEL_PANEL',   25] )
+                      ['DEL_PANEL',   25],
+                      ['ADD_SNAPSHOT',36],
+                      ['DEL_SNAPSHOT',37]
+                    )
 
 TKCD_PROT_TYPE = enum( ['P_none', 0],
                        ['P_4x1_32k',      1],
