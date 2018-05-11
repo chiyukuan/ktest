@@ -16,7 +16,7 @@ def getAddSShotMsg(cltOpq, readonly, entries):
         msg.entries[2 * idx + 1] = entries[idx][1]
     return msg
 
-def getAddSShotMsg(cltOpq, readonly, entries):
+def getDelSShotMsg(cltOpq, readonly, entries):
     slotCnt  = len(entries)
     pLen = 32 + slotCnt * 8
     msg = eval('SshotMsg_%d' % slotCnt)(0xF3F3, 0, 0, pLen, TKCD_CMD_TYPE.DEL_SNAPSHOT.getVal(), 0, 0, cltOpq,
